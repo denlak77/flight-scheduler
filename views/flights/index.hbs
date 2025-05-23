@@ -1,0 +1,6 @@
+<h2>Список рейсов</h2>
+<ul>
+  {{#each flights}}
+    <li>{{flightNumber}}: {{origin}} → {{destination}} ({{departureTime}})</li>
+  {{/each}}
+</ul>

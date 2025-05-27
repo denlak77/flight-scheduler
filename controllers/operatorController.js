@@ -1,4 +1,4 @@
-const { Flight, Airport, Airline, Ticket } = require('../models');
+const { Flight, Airport, Airline, Ticket, User } = require('../models');
 
 // Панель управления оператора
 exports.getDashboard = async (req, res) => {

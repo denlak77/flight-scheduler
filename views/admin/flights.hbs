@@ -1,0 +1,123 @@
+{{> header}}
+
+<div class="container">
+  <h1 class="mb-4">Управление рейсами (Администратор)</h1>
+
+  {{#if error}}
+    <div class="alert alert-danger">{{error}}</div>
+  {{/if}}
+
+  <div class="card mb-4">
+    <div class="card-header">
+      <h5 class="card-title mb-0">Добавить рейс</h5>
+    </div>
+    <div class="card-body">
+      <form action="/admin/flights" method="POST">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="mb-3">
+              <label for="flightNumber" class="form-label">Номер рейса</label>
+              <input type="text" class="form-control" id="flightNumber" name="flightNumber" required>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="mb-3">
+              <label for="departureAirportId" class="form-label">Аэропорт вылета</label>
+              <select class="form-select" id="departureAirportId" name="departureAirportId" required>
+                {{#each airports}}
+                  <option value="{{id}}">{{name}} ({{code}})</option>
+                {{/each}}
+              </select>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="mb-3">
+              <label for="arrivalAirportId" class="form-label">Аэропорт прилета</label>
+              <select class="form-select" id="arrivalAirportId" name="arrivalAirportId" required>
+                {{#each airports}}
+                  <option value="{{id}}">{{name}} ({{code}})</option>
+                {{/each}}
+              </select>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="mb-3">
+              <label for="airlineId" class="form-label">Авиакомпания</label>
+              <select class="form-select" id="airlineId" name="airlineId" required>
+                {{#each airlines}}
+                  <option value="{{id}}">{{name}}</option>
+                {{/each}}
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-3">
+            <div class="mb-3">
+              <label for="departureTime" class="form-label">Время вылета</label>
+              <input type="datetime-local" class="form-control" id="departureTime" name="departureTime" required>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="mb-3">
+              <label for="arrivalTime" class="form-label">Время прилета</label>
+              <input type="datetime-local" class="form-control" id="arrivalTime" name="arrivalTime" required>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="mb-3">
+              <label for="price" class="form-label">Цена</label>
+              <input type="number" class="form-control" id="price" name="price" required>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Добавить рейс</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h5 class="card-title mb-0">Список рейсов</h5>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Номер рейса</th>
+              <th>Откуда</th>
+              <th>Куда</th>
+              <th>Время вылета</th>
+              <th>Время прилета</th>
+              <th>Авиакомпания</th>
+              <th>Цена</th>
+              <th>Действия</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each flights}}
+            <tr>
+              <td>{{flightNumber}}</td>
+              <td>{{departureAirport.name}} ({{departureAirport.code}})</td>
+              <td>{{arrivalAirport.name}} ({{arrivalAirport.code}})</td>
+              <td>{{formatDate departureTime}}</td>
+              <td>{{formatDate arrivalTime}}</td>
+              <td>{{Airline.name}}</td>
+              <td>{{price}} ₽</td>
+              <td>
+                <!-- Для простоты: только удаление, редактирование можно добавить по желанию -->
+                <form action="/admin/flights/{{id}}?_method=DELETE" method="POST" class="d-inline">
+                  <button type="submit" class="btn btn-sm btn-danger">Удалить</button>
+                </form>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{> footer}} 

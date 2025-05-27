@@ -1,2 +1,12 @@
-<h1>{{title}}</h1>
-<a href="/flights">Перейти к расписанию рейсов</a>
+<div class="jumbotron">
+    <h1 class="display-4">Добро пожаловать в систему бронирования авиабилетов!</h1>
+    <p class="lead">Здесь вы можете найти и забронировать авиабилеты на нужные вам рейсы.</p>
+    <hr class="my-4">
+    <p>Выберите действие:</p>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+        <a href="/flights" class="btn btn-primary btn-lg me-md-2">Просмотреть рейсы</a>
+        {{#unless user}}
+            <a href="/auth/login" class="btn btn-secondary btn-lg">Войти в систему</a>
+        {{/unless}}
+    </div>
+</div>

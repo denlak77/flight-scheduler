@@ -1,0 +1,9 @@
+Админ:
+
+Email: admin@example.com
+Пароль: admin123
+
+Оператор:
+
+Email: operator@example.com
+Пароль: 12345

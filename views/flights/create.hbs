@@ -1,0 +1,57 @@
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h1>Добавить новый рейс</h1>
+        
+        <form action="/flights/create" method="POST" class="mt-4">
+            <div class="mb-3">
+                <label for="flightNumber" class="form-label">Номер рейса</label>
+                <input type="text" class="form-control" id="flightNumber" name="flightNumber" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="airlineId" class="form-label">Авиакомпания</label>
+                <select class="form-select" id="airlineId" name="airlineId" required>
+                    {{#each airlines}}
+                        <option value="{{this.id}}">{{this.name}}</option>
+                    {{/each}}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="departureAirportId" class="form-label">Аэропорт вылета</label>
+                <select class="form-select" id="departureAirportId" name="departureAirportId" required>
+                    {{#each airports}}
+                        <option value="{{this.id}}">{{this.name}}</option>
+                    {{/each}}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="arrivalAirportId" class="form-label">Аэропорт прилета</label>
+                <select class="form-select" id="arrivalAirportId" name="arrivalAirportId" required>
+                    {{#each airports}}
+                        <option value="{{this.id}}">{{this.name}}</option>
+                    {{/each}}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="departureTime" class="form-label">Время вылета</label>
+                <input type="datetime-local" class="form-control" id="departureTime" name="departureTime" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="arrivalTime" class="form-label">Время прилета</label>
+                <input type="datetime-local" class="form-control" id="arrivalTime" name="arrivalTime" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="price" class="form-label">Цена билета</label>
+                <input type="number" class="form-control" id="price" name="price" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Создать рейс</button>
+            <a href="/flights" class="btn btn-secondary">Отмена</a>
+        </form>
+    </div>
+</div> 

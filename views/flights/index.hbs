@@ -1,6 +1,39 @@
-<h2>Список рейсов</h2>
-<ul>
-  {{#each flights}}
-    <li>{{flightNumber}}: {{origin}} → {{destination}} ({{departureTime}})</li>
-  {{/each}}
-</ul>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Расписание рейсов</h1>
+    <a href="/flights/create" class="btn btn-success">Добавить рейс</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Номер рейса</th>
+                <th>Авиакомпания</th>
+                <th>Откуда</th>
+                <th>Куда</th>
+                <th>Время вылета</th>
+                <th>Время прилета</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each flights}}
+            <tr>
+                <td>{{this.flightNumber}}</td>
+                <td>{{this.Airline.name}}</td>
+                <td>{{this.departureAirport.name}}</td>
+                <td>{{this.arrivalAirport.name}}</td>
+                <td>{{formatDate this.departureTime}}</td>
+                <td>{{formatDate this.arrivalTime}}</td>
+                <td>
+                    <a href="/flights/{{this.id}}" class="btn btn-info btn-sm">Детали</a>
+                    <a href="/flights/{{this.id}}/edit" class="btn btn-warning btn-sm">Редактировать</a>
+                    <form action="/flights/{{this.id}}/delete" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Вы уверены?')">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>

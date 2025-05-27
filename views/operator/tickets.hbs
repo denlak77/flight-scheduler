@@ -1,0 +1,80 @@
+{{> header}}
+
+<div class="container">
+  <h1 class="mb-4">Управление билетами</h1>
+
+  {{#if error}}
+    <div class="alert alert-danger">{{error}}</div>
+  {{/if}}
+
+  <div class="card">
+    <div class="card-header">
+      <h5 class="card-title mb-0">Список билетов</h5>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Пассажир</th>
+              <th>Номер рейса</th>
+              <th>Откуда</th>
+              <th>Куда</th>
+              <th>Время вылета</th>
+              <th>Статус</th>
+              <th>Действия</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each tickets}}
+            <tr>
+              <td>{{id}}</td>
+              <td>{{User.name}}</td>
+              <td>{{Flight.flightNumber}}</td>
+              <td>{{Flight.departureAirport.name}} ({{Flight.departureAirport.code}})</td>
+              <td>{{Flight.arrivalAirport.name}} ({{Flight.arrivalAirport.code}})</td>
+              <td>{{formatDate Flight.departureTime}}</td>
+              <td>
+                <span class="badge {{#if (eq status 'booked')}}bg-success{{else}}bg-danger{{/if}}">
+                  {{#if (eq status 'booked')}}Забронирован{{else}}Отменен{{/if}}
+                </span>
+              </td>
+              <td>
+                {{#if (eq status 'booked')}}
+                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#cancelTicket{{id}}">
+                  Отменить
+                </button>
+                {{/if}}
+              </td>
+            </tr>
+
+            <!-- Модальное окно отмены билета -->
+            <div class="modal fade" id="cancelTicket{{id}}" tabindex="-1">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Подтверждение отмены</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Вы уверены, что хотите отменить билет для пассажира {{User.name}}?</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <form action="/operator/tickets/{{id}}?_method=DELETE" method="POST" class="d-inline">
+                      <button type="submit" class="btn btn-danger">Отменить билет</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{> footer}} 

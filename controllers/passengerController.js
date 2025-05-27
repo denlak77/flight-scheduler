@@ -105,4 +105,20 @@ exports.cancelTicket = async (req, res) => {
       user: req.session.user
     });
   }
-}; 
+};
+
+// Страница поддержки
+exports.getSupport = async (req, res) => {
+  try {
+    res.render('passenger/support', {
+      title: 'Поддержка',
+      user: req.session.user
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('error', {
+      message: 'Ошибка при загрузке страницы поддержки',
+      user: req.session.user
+    });
+  }
+};

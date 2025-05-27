@@ -9,6 +9,9 @@ router.use(checkRole(['operator']));
 // Панель управления
 router.get('/dashboard', operatorController.getDashboard);
 
+// Страница поддержки
+router.get('/support', operatorController.getSupport);
+
 // Управление рейсами
 router.get('/flights', operatorController.getFlights);
 router.post('/flights', operatorController.createFlight);

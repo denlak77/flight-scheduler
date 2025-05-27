@@ -14,4 +14,7 @@ router.get('/flights', passengerController.getAvailableFlights);
 router.post('/flights/:flightId/book', passengerController.bookTicket);
 router.delete('/tickets/:ticketId', passengerController.cancelTicket);
 
-module.exports = router; 
+// Страница поддержки
+router.get('/support', passengerController.getSupport);
+
+module.exports = router;

@@ -1,9 +1,11 @@
 const sequelize = require('../config/db');
+
 const Airline = require('./airline');
 const Airport = require('./airport');
 const Flight = require('./flight');
 const User    = require('./user');
 const Ticket  = require('./ticket');
+const SupportMessage = require('./supportmessage');
 
 // Связи Flight ↔ Airline
 Flight.belongsTo(Airline, { foreignKey: 'airlineId' });
@@ -37,4 +39,7 @@ User.hasMany(Ticket,     { foreignKey: 'userId'   });
 Ticket.belongsTo(Flight, { foreignKey: 'flightId' });
 Flight.hasMany(Ticket,   { foreignKey: 'flightId' });
 
-module.exports = { sequelize, Airline, Airport, Flight, User, Ticket };
+// Call the associate method for SupportMessage
+SupportMessage.associate({ User });
+
+module.exports = { sequelize, Airline, Airport, Flight, User, Ticket, SupportMessage };

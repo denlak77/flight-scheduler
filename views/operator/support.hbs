@@ -1,0 +1,179 @@
+{{> header}}
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card fade-in">
+                <div class="card-body">
+                    <h1 class="mb-0">
+                        <i class="fas fa-comments text-primary me-2"></i>
+                        Сообщения поддержки
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card fade-in" style="animation-delay: 0.2s;">
+                <div class="card-body">
+                    <div id="messagesList">
+                        <!-- Сообщения будут добавлены через JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно для ответа -->
+<div class="modal fade" id="replyModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ответить на сообщение</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="replyForm">
+                    <input type="hidden" id="messageId">
+                    <div class="mb-3">
+                        <label for="replyText" class="form-label">Ваш ответ:</label>
+                        <textarea class="form-control" id="replyText" rows="5" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-primary" id="sendReplyButton">Отправить ответ</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const messagesList = document.getElementById('messagesList');
+    const replyModal = new bootstrap.Modal(document.getElementById('replyModal'));
+    const messageIdInput = document.getElementById('messageId');
+    const replyText = document.getElementById('replyText');
+    const sendReplyButton = document.getElementById('sendReplyButton');
+
+    // Функция для загрузки сообщений
+    async function loadMessages() {
+        try {
+            const response = await fetch('/api/support/messages');
+            const messages = await response.json();
+            
+            messagesList.innerHTML = messages.map(message => `
+                <div class="card mb-3 ${message.status === 'closed' ? 'bg-light' : ''}">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-user me-2"></i>${message.User.name}
+                            </h5>
+                            <div>
+                                <span class="badge ${message.status === 'open' ? 'bg-success' : 'bg-secondary'}">
+                                    ${message.status === 'open' ? 'Открыто' : 'Закрыто'}
+                                </span>
+                                <button class="btn btn-sm btn-danger ms-2" onclick="deleteUserChat(${message.userId}, '${message.User.name}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="card-text">${message.message}</p>
+                        <small class="text-muted">
+                            <i class="fas fa-clock me-1"></i>${new Date(message.createdAt).toLocaleString('ru-RU')}
+                        </small>
+                        ${message.reply ? `
+                            <div class="mt-3 p-3 bg-light rounded">
+                                <h6 class="mb-2"><i class="fas fa-reply me-2"></i>Ответ оператора:</h6>
+                                <p class="mb-0">${message.reply}</p>
+                            </div>
+                        ` : `
+                            <div class="mt-3">
+                                <button class="btn btn-primary btn-sm" onclick="openReplyModal('${message.id}')">
+                                    <i class="fas fa-reply me-1"></i>Ответить
+                                </button>
+                            </div>
+                        `}
+                    </div>
+                </div>
+            `).join('');
+        } catch (error) {
+            console.error('Ошибка при загрузке сообщений:', error);
+            messagesList.innerHTML = '<div class="alert alert-danger">Ошибка при загрузке сообщений</div>';
+        }
+    }
+
+    // Функция для открытия модального окна ответа
+    window.openReplyModal = function(messageId) {
+        messageIdInput.value = messageId;
+        replyText.value = '';
+        replyModal.show();
+    };
+
+    // Функция для удаления истории чата пользователя
+    window.deleteUserChat = function(userId, userName) {
+        if (confirm(`Вы уверены, что хотите удалить всю историю чата пользователя ${userName}?`)) {
+            fetch(`/api/support/messages/user/${userId}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('История чата успешно удалена');
+                    loadMessages(); // Перезагрузить список сообщений
+                } else {
+                    alert(data.error || 'Произошла ошибка при удалении истории чата');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка при удалении истории чата:', error);
+                alert('Произошла ошибка при удалении истории чата');
+            });
+        }
+    };
+
+    // Обработчик отправки ответа
+    sendReplyButton.addEventListener('click', async function() {
+        const messageId = messageIdInput.value;
+        const reply = replyText.value.trim();
+
+        if (!reply) {
+            alert('Пожалуйста, введите ответ');
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/support/messages/${messageId}/reply`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ reply })
+            });
+
+            if (response.ok) {
+                replyModal.hide();
+                loadMessages();
+            } else {
+                const error = await response.json();
+                alert(error.error || 'Ошибка при отправке ответа');
+            }
+        } catch (error) {
+            console.error('Ошибка при отправке ответа:', error);
+            alert('Ошибка при отправке ответа');
+        }
+    });
+
+    // Загружаем сообщения при загрузке страницы
+    loadMessages();
+
+    // Обновляем сообщения каждые 30 секунд
+    setInterval(loadMessages, 30000);
+});
+</script>
+
+{{> footer}}

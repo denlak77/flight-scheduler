@@ -78,6 +78,10 @@ app.use('/operator', operatorRoutes);
 app.use('/passenger', passengerRoutes);
 app.use('/admin/flights', adminFlightsRoutes);
 
+// API маршруты для поддержки
+const supportRoutes = require('./routes/support');
+app.use('/api/support', supportRoutes);
+
 // Главная страница
 app.get('/', (req, res) => {
   res.render('index', {

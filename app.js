@@ -29,7 +29,20 @@ app.engine('hbs', exphbs.engine({
     },
     eq: function(v1, v2) {
       return v1 === v2;
+    },
+    formatDateTimeLocal: function(date) {
+      if (!date) return '';
+      const d = new Date(date);
+      const pad = n => n.toString().padStart(2, '0');
+      return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + 'T' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+    },
+    json: function(context) {
+      return JSON.stringify(context, null, 2);
     }
+  },
+  runtimeOptions: {
+    allowProtoPropertiesByDefault: true,
+    allowProtoMethodsByDefault: true
   }
 }));
 app.set('view engine', 'hbs');
@@ -41,8 +54,13 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
   secret: process.env.SESSION_SECRET || 'your-secret-key',
-  resave: false,
-  saveUninitialized: true
+  resave: true,
+  saveUninitialized: false,
+  cookie: {
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  }
 }));
 app.use(methodOverride('_method'));
 

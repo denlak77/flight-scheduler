@@ -106,12 +106,72 @@
               <td>{{Airline.name}}</td>
               <td>{{price}} ₽</td>
               <td>
-                <!-- Для простоты: только удаление, редактирование можно добавить по желанию -->
+                <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editFlight{{id}}">Редактировать</button>
                 <form action="/admin/flights/{{id}}?_method=DELETE" method="POST" class="d-inline">
                   <button type="submit" class="btn btn-sm btn-danger">Удалить</button>
                 </form>
               </td>
             </tr>
+
+            <!-- Модальное окно редактирования -->
+            <div class="modal fade" id="editFlight{{id}}" tabindex="-1">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Редактировать рейс</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                  </div>
+                  <form action="/admin/flights/{{id}}?_method=PUT" method="POST">
+                    <div class="modal-body">
+                      <div class="mb-3">
+                        <label class="form-label">Номер рейса</label>
+                        <input type="text" class="form-control" name="flightNumber" value="{{flightNumber}}" required>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Аэропорт вылета</label>
+                        <select class="form-select" name="departureAirportId" required>
+                          {{#each ../airports}}
+                            <option value="{{id}}" {{#if (eq id ../departureAirportId)}}selected{{/if}}>{{name}} ({{code}})</option>
+                          {{/each}}
+                        </select>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Аэропорт прилета</label>
+                        <select class="form-select" name="arrivalAirportId" required>
+                          {{#each ../airports}}
+                            <option value="{{id}}" {{#if (eq id ../arrivalAirportId)}}selected{{/if}}>{{name}} ({{code}})</option>
+                          {{/each}}
+                        </select>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Авиакомпания</label>
+                        <select class="form-select" name="airlineId" required>
+                          {{#each ../airlines}}
+                            <option value="{{id}}" {{#if (eq id ../airlineId)}}selected{{/if}}>{{name}}</option>
+                          {{/each}}
+                        </select>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Время вылета</label>
+                        <input type="datetime-local" class="form-control" name="departureTime" value="{{formatDateTimeLocal departureTime}}" required>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Время прилета</label>
+                        <input type="datetime-local" class="form-control" name="arrivalTime" value="{{formatDateTimeLocal arrivalTime}}" required>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Цена</label>
+                        <input type="number" class="form-control" name="price" value="{{price}}" required>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                      <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
             {{/each}}
           </tbody>
         </table>

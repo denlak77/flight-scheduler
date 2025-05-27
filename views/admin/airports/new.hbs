@@ -1,0 +1,65 @@
+{{> header}}
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card fade-in">
+                <div class="card-body">
+                    <h1 class="mb-0">
+                        <i class="fas fa-plus text-primary me-2"></i>
+                        Добавление нового аэропорта
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card fade-in" style="animation-delay: 0.2s;">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-plane-departure text-primary me-2"></i>
+                        Информация об аэропорте
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {{#if error}}
+                    <div class="alert alert-danger fade-in">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        {{error}}
+                    </div>
+                    {{/if}}
+
+                    <form action="/admin/airports" method="POST">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">
+                                <i class="fas fa-plane-departure me-2"></i>Название
+                            </label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="code" class="form-label">
+                                <i class="fas fa-map-marker-alt me-2"></i>Код
+                            </label>
+                            <input type="text" class="form-control" id="code" name="code" maxlength="3" required>
+                            <div class="form-text">Трехбуквенный код аэропорта (например, SVO, LED)</div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Создать аэропорт
+                            </button>
+                            <a href="/admin/airports" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Вернуться к списку
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{> footer}} 

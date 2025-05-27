@@ -12,23 +12,23 @@ Airline.hasMany(Flight, { foreignKey: 'airlineId' });
 // Связи Flight ↔ Airport
 Flight.belongsTo(Airport, {
   as:        'departureAirport',
-  foreignKey:'origin',        // ваше поле origin: STRING
-  targetKey: 'code'           // Airport.code
+  foreignKey:'departureAirportId',
+  targetKey: 'id'
 });
 Flight.belongsTo(Airport, {
   as:        'arrivalAirport',
-  foreignKey:'destination',   // ваше поле destination: STRING
-  targetKey: 'code'           // Airport.code
+  foreignKey:'arrivalAirportId',
+  targetKey: 'id'
 });
 
 // (Опциональные обратные связи)
 Airport.hasMany(Flight, {
   as:        'departures',
-  foreignKey:'origin'
+  foreignKey:'departureAirportId'
 });
 Airport.hasMany(Flight, {
   as:        'arrivals',
-  foreignKey:'destination'
+  foreignKey:'arrivalAirportId'
 });
 
 // Связи Ticket ↔ User и Flight

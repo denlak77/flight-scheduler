@@ -1,0 +1,40 @@
+<div class="container">
+  <h1 class="mb-4">Доступные рейсы</h1>
+  <div class="card">
+    <div class="card-header">Список рейсов</div>
+    <div class="card-body">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Номер рейса</th>
+            <th>Откуда</th>
+            <th>Куда</th>
+            <th>Время вылета</th>
+            <th>Время прилета</th>
+            <th>Авиакомпания</th>
+            <th>Цена</th>
+            <th>Действия</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each flights}}
+          <tr>
+            <td>{{flightNumber}}</td>
+            <td>{{departureAirport.name}} ({{departureAirport.code}})</td>
+            <td>{{arrivalAirport.name}} ({{arrivalAirport.code}})</td>
+            <td>{{formatDate departureTime}}</td>
+            <td>{{formatDate arrivalTime}}</td>
+            <td>{{Airline.name}}</td>
+            <td>{{price}} ₽</td>
+            <td>
+              <form action="/passenger/flights/{{id}}/book" method="POST">
+                <button type="submit" class="btn btn-success btn-sm">Забронировать</button>
+              </form>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div> 

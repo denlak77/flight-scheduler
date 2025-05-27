@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const flightController = require('../controllers/flightController');
+const { checkAuth } = require('../middleware/auth');
+
+// Применяем middleware checkAuth ко всем маршрутам в этом роутере
+router.use(checkAuth);
 
 // Get all flights
 router.get('/', flightController.getAllFlights);

@@ -5,13 +5,13 @@ const Airline = require('../models/Airline');
 
 exports.getAllFlights = async (req, res) => {
   try {
-    const flights = await Flight.findAll({
+    const flights = (await Flight.findAll({
       include: [
         { model: Airport, as: 'departureAirport' },
         { model: Airport, as: 'arrivalAirport' },
         { model: Airline }
       ]
-    });
+    })).map(f => f.get({ plain: true }));
     res.render('flights/index', { flights });
   } catch (error) {
     res.status(500).render('error', { error: 'Failed to fetch flights' });
@@ -30,7 +30,7 @@ exports.getFlightById = async (req, res) => {
     if (!flight) {
       return res.status(404).render('error', { error: 'Flight not found' });
     }
-    res.render('flights/details', { flight });
+    res.render('flights/details', { flight: flight.get({ plain: true }) });
   } catch (error) {
     res.status(500).render('error', { error: 'Failed to fetch flight details' });
   }

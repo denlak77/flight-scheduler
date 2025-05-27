@@ -1,144 +1,100 @@
+{{> header}}
+
 <div class="container">
-  <h1 class="mb-4">Управление пользователями</h1>
-
-  {{#if error}}
-    <div class="alert alert-danger">{{error}}</div>
-  {{/if}}
-
-  <div class="card mb-4">
-    <div class="card-header">
-      <h5 class="card-title mb-0">Добавить пользователя</h5>
-    </div>
-    <div class="card-body">
-      <form action="/admin/users" method="POST">
-        <div class="row">
-          <div class="col-md-3">
-            <div class="mb-3">
-              <label for="name" class="form-label">Имя</label>
-              <input type="text" class="form-control" id="name" name="name" required>
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card fade-in">
+                <div class="card-body">
+                    <h1 class="mb-0">
+                        <i class="fas fa-users text-primary me-2"></i>
+                        Управление пользователями
+                    </h1>
+                </div>
             </div>
-          </div>
-          <div class="col-md-3">
-            <div class="mb-3">
-              <label for="email" class="form-label">Email</label>
-              <input type="email" class="form-control" id="email" name="email" required>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="mb-3">
-              <label for="password" class="form-label">Пароль</label>
-              <input type="password" class="form-control" id="password" name="password" required>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="mb-3">
-              <label for="role" class="form-label">Роль</label>
-              <select class="form-select" id="role" name="role" required>
-                <option value="passenger">Пассажир</option>
-                <option value="operator">Оператор</option>
-                <option value="admin">Администратор</option>
-              </select>
-            </div>
-          </div>
         </div>
-        <button type="submit" class="btn btn-primary">Добавить пользователя</button>
-      </form>
     </div>
-  </div>
 
-  <div class="card">
-    <div class="card-header">
-      <h5 class="card-title mb-0">Список пользователей</h5>
-    </div>
-    <div class="card-body">
-      <div class="table-responsive">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Имя</th>
-              <th>Email</th>
-              <th>Роль</th>
-              <th>Действия</th>
-            </tr>
-          </thead>
-          <tbody>
-            {{#each users}}
-            <tr>
-              <td>{{id}}</td>
-              <td>{{name}}</td>
-              <td>{{email}}</td>
-              <td>{{role}}</td>
-              <td>
-                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editUser{{id}}">
-                  Редактировать
-                </button>
-                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUser{{id}}">
-                  Удалить
-                </button>
-              </td>
-            </tr>
-
-            <!-- Модальное окно редактирования -->
-            <div class="modal fade" id="editUser{{id}}" tabindex="-1">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title">Редактировать пользователя</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                  </div>
-                  <form action="/admin/users/{{id}}" method="POST">
-                    <div class="modal-body">
-                      <div class="mb-3">
-                        <label for="editName{{id}}" class="form-label">Имя</label>
-                        <input type="text" class="form-control" id="editName{{id}}" name="name" value="{{name}}" required>
-                      </div>
-                      <div class="mb-3">
-                        <label for="editEmail{{id}}" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="editEmail{{id}}" name="email" value="{{email}}" required>
-                      </div>
-                      <div class="mb-3">
-                        <label for="editRole{{id}}" class="form-label">Роль</label>
-                        <select class="form-select" id="editRole{{id}}" name="role" required>
-                          <option value="passenger" {{#if (eq role 'passenger')}}selected{{/if}}>Пассажир</option>
-                          <option value="operator" {{#if (eq role 'operator')}}selected{{/if}}>Оператор</option>
-                          <option value="admin" {{#if (eq role 'admin')}}selected{{/if}}>Администратор</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                      <button type="submit" class="btn btn-primary">Сохранить</button>
-                    </div>
-                  </form>
+    <div class="row">
+        <div class="col-12">
+            <div class="card fade-in" style="animation-delay: 0.2s;">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-list text-primary me-2"></i>
+                        Список пользователей
+                    </h5>
                 </div>
-              </div>
-            </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th><i class="fas fa-hashtag me-2"></i>ID</th>
+                                    <th><i class="fas fa-user me-2"></i>Имя</th>
+                                    <th><i class="fas fa-envelope me-2"></i>Email</th>
+                                    <th><i class="fas fa-user-tag me-2"></i>Роль</th>
+                                    <th><i class="fas fa-calendar me-2"></i>Дата регистрации</th>
+                                    <th><i class="fas fa-cogs me-2"></i>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each users}}
+                                <tr class="fade-in" style="animation-delay: {{@index}}0ms">
+                                    <td>{{id}}</td>
+                                    <td>{{name}}</td>
+                                    <td>{{email}}</td>
+                                    <td>
+                                        <span class="badge {{#if (eq role 'admin')}}bg-danger{{else if (eq role 'operator')}}bg-warning{{else}}bg-info{{/if}}">
+                                            {{#if (eq role 'admin')}}Администратор{{else if (eq role 'operator')}}Оператор{{else}}Пользователь{{/if}}
+                                        </span>
+                                    </td>
+                                    <td>{{formatDate createdAt}}</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a href="/admin/users/{{id}}/edit" class="btn btn-warning btn-sm">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteUser{{id}}">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
 
-            <!-- Модальное окно удаления -->
-            <div class="modal fade" id="deleteUser{{id}}" tabindex="-1">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title">Подтверждение удаления</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                  </div>
-                  <div class="modal-body">
-                    <p>Вы уверены, что хотите удалить пользователя {{name}}?</p>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                    <form action="/admin/users/{{id}}?_method=DELETE" method="POST" class="d-inline">
-                      <button type="submit" class="btn btn-danger">Удалить</button>
-                    </form>
-                  </div>
+                                <!-- Модальное окно удаления -->
+                                <div class="modal fade" id="deleteUser{{id}}" tabindex="-1">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">
+                                                    <i class="fas fa-exclamation-triangle text-warning me-2"></i>
+                                                    Подтверждение удаления
+                                                </h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Вы уверены, что хотите удалить пользователя {{name}}?</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    <i class="fas fa-times me-2"></i>Отмена
+                                                </button>
+                                                <form action="/admin/users/{{id}}?_method=DELETE" method="POST" class="d-inline">
+                                                    <button type="submit" class="btn btn-danger">
+                                                        <i class="fas fa-trash me-2"></i>Удалить
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-              </div>
             </div>
-            {{/each}}
-          </tbody>
-        </table>
-      </div>
+        </div>
     </div>
-  </div>
-</div> 
+</div>
+
+{{> footer}} 

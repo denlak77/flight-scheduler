@@ -1,32 +1,181 @@
-/* Добавьте стили */
-
-.jumbotron {
-    padding: 2rem 1rem;
-    margin-bottom: 2rem;
-    background-color: #e9ecef;
-    border-radius: .3rem;
+/* Modern Aviation Design Styles */
+:root {
+    --primary-color: #1a73e8;
+    --secondary-color: #4285f4;
+    --accent-color: #34a853;
+    --text-color: #202124;
+    --light-text: #ffffff;
+    --card-bg: rgba(255, 255, 255, 0.9);
+    --hover-bg: rgba(255, 255, 255, 0.95);
 }
 
-.table th {
-    background-color: #f8f9fa;
+body {
+    background: linear-gradient(135deg, #87CEEB, #1E90FF);
+    background-attachment: fixed;
+    color: var(--text-color);
+    font-family: 'Roboto', sans-serif;
+    min-height: 100vh;
 }
 
-.btn-sm {
-    margin: 0 2px;
-}
-
-.form-label {
-    font-weight: 500;
-}
-
-.alert {
-    margin-bottom: 1rem;
-}
-
+/* Navbar Styling */
 .navbar {
+    background: rgba(26, 115, 232, 0.95) !important;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 2rem;
 }
 
 .navbar-brand {
-    font-weight: bold;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--light-text) !important;
+}
+
+.nav-link {
+    color: var(--light-text) !important;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+/* Card Styling */
+.card {
+    background: var(--card-bg);
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    background: var(--hover-bg);
+}
+
+.card-header {
+    background: rgba(255, 255, 255, 0.8);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 15px 15px 0 0 !important;
+}
+
+/* Button Styling */
+.btn {
+    border-radius: 8px;
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(26, 115, 232, 0.3);
+}
+
+.btn-secondary {
+    background: var(--secondary-color);
+    border: none;
+}
+
+.btn-secondary:hover {
+    background: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
+}
+
+/* Table Styling */
+.table {
+    background: var(--card-bg);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table thead th {
+    background: rgba(26, 115, 232, 0.1);
+    border-bottom: 2px solid rgba(26, 115, 232, 0.2);
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.table tbody tr {
+    transition: all 0.3s ease;
+}
+
+.table tbody tr:hover {
+    background: rgba(26, 115, 232, 0.05);
+}
+
+/* Form Styling */
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(26, 115, 232, 0.25);
+}
+
+.form-label {
+    font-weight: 500;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+}
+
+/* Alert Styling */
+.alert {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer Styling */
+.footer {
+    background: rgba(26, 115, 232, 0.95);
+    color: var(--light-text);
+    padding: 1.5rem 0;
+    margin-top: 3rem;
+    backdrop-filter: blur(10px);
+}
+
+/* Animation Classes */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 1rem;
+    }
+    
+    .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
 }

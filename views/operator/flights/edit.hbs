@@ -1,0 +1,129 @@
+{{> header}}
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card fade-in">
+                <div class="card-body">
+                    <h1 class="mb-0">
+                        <i class="fas fa-edit text-primary me-2"></i>
+                        Редактирование рейса
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card fade-in" style="animation-delay: 0.2s;">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-plane text-primary me-2"></i>
+                        Информация о рейсе
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {{#if error}}
+                    <div class="alert alert-danger fade-in">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        {{error}}
+                    </div>
+                    {{/if}}
+
+                    <form action="/operator/flights/{{flight.id}}?_method=PUT" method="POST">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="flightNumber" class="form-label">
+                                        <i class="fas fa-hashtag me-2"></i>Номер рейса
+                                    </label>
+                                    <input type="text" class="form-control" id="flightNumber" name="flightNumber" value="{{flight.flightNumber}}" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="airlineId" class="form-label">
+                                        <i class="fas fa-building me-2"></i>Авиакомпания
+                                    </label>
+                                    <select class="form-select" id="airlineId" name="airlineId" required>
+                                        {{#each airlines}}
+                                        <option value="{{id}}" {{#if (eq id ../flight.airlineId)}}selected{{/if}}>{{name}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="departureAirportId" class="form-label">
+                                        <i class="fas fa-plane-departure me-2"></i>Аэропорт вылета
+                                    </label>
+                                    <select class="form-select" id="departureAirportId" name="departureAirportId" required>
+                                        {{#each airports}}
+                                        <option value="{{id}}" {{#if (eq id ../flight.departureAirportId)}}selected{{/if}}>{{name}} ({{code}})</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="arrivalAirportId" class="form-label">
+                                        <i class="fas fa-plane-arrival me-2"></i>Аэропорт прилета
+                                    </label>
+                                    <select class="form-select" id="arrivalAirportId" name="arrivalAirportId" required>
+                                        {{#each airports}}
+                                        <option value="{{id}}" {{#if (eq id ../flight.arrivalAirportId)}}selected{{/if}}>{{name}} ({{code}})</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="departureTime" class="form-label">
+                                        <i class="fas fa-clock me-2"></i>Время вылета
+                                    </label>
+                                    <input type="datetime-local" class="form-control" id="departureTime" name="departureTime" value="{{formatDateTime flight.departureTime}}" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="arrivalTime" class="form-label">
+                                        <i class="fas fa-clock me-2"></i>Время прилета
+                                    </label>
+                                    <input type="datetime-local" class="form-control" id="arrivalTime" name="arrivalTime" value="{{formatDateTime flight.arrivalTime}}" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="price" class="form-label">
+                                <i class="fas fa-ruble-sign me-2"></i>Цена
+                            </label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="price" name="price" value="{{flight.price}}" required>
+                                <span class="input-group-text">₽</span>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Сохранить изменения
+                            </button>
+                            <a href="/operator/flights" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Вернуться к списку
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{> footer}} 

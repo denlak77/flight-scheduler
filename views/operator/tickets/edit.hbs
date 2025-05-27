@@ -1,0 +1,96 @@
+{{> header}}
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card fade-in">
+                <div class="card-body">
+                    <h1 class="mb-0">
+                        <i class="fas fa-edit text-primary me-2"></i>
+                        Редактирование билета
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card fade-in" style="animation-delay: 0.2s;">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-ticket-alt text-primary me-2"></i>
+                        Информация о билете
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {{#if error}}
+                    <div class="alert alert-danger fade-in">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        {{error}}
+                    </div>
+                    {{/if}}
+
+                    <form action="/operator/tickets/{{ticket.id}}?_method=PUT" method="POST">
+                        <div class="mb-3">
+                            <label for="flightId" class="form-label">
+                                <i class="fas fa-plane me-2"></i>Рейс
+                            </label>
+                            <select class="form-select" id="flightId" name="flightId" required>
+                                {{#each flights}}
+                                <option value="{{id}}" {{#if (eq id ../ticket.flightId)}}selected{{/if}}>
+                                    {{flightNumber}} - {{departureAirport.name}} → {{arrivalAirport.name}}
+                                </option>
+                                {{/each}}
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="userId" class="form-label">
+                                <i class="fas fa-user me-2"></i>Пассажир
+                            </label>
+                            <select class="form-select" id="userId" name="userId" required>
+                                {{#each users}}
+                                <option value="{{id}}" {{#if (eq id ../ticket.userId)}}selected{{/if}}>
+                                    {{name}} ({{email}})
+                                </option>
+                                {{/each}}
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="price" class="form-label">
+                                <i class="fas fa-ruble-sign me-2"></i>Цена
+                            </label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="price" name="price" value="{{ticket.price}}" required>
+                                <span class="input-group-text">₽</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="status" class="form-label">
+                                <i class="fas fa-info-circle me-2"></i>Статус
+                            </label>
+                            <select class="form-select" id="status" name="status" required>
+                                <option value="booked" {{#if (eq ticket.status 'booked')}}selected{{/if}}>Забронирован</option>
+                                <option value="cancelled" {{#if (eq ticket.status 'cancelled')}}selected{{/if}}>Отменен</option>
+                            </select>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Сохранить изменения
+                            </button>
+                            <a href="/operator/tickets" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Вернуться к списку
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{> footer}} 

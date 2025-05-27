@@ -4,14 +4,14 @@ const bcrypt = require('bcryptjs');
 // Панель управления администратора
 exports.getDashboard = async (req, res) => {
   try {
-    const users = await User.findAll();
-    const flights = await Flight.findAll({
+    const users = (await User.findAll()).map(u => u.get({ plain: true }));
+    const flights = (await Flight.findAll({
       include: [
         { model: Airport, as: 'departureAirport' },
         { model: Airport, as: 'arrivalAirport' },
         { model: Airline }
       ]
-    });
+    })).map(f => f.get({ plain: true }));
     
     res.render('admin/dashboard', {
       title: 'Панель администратора',

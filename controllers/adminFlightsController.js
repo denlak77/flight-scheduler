@@ -2,15 +2,18 @@ const { Flight, Airport, Airline } = require('../models');
 
 exports.getFlights = async (req, res) => {
   try {
-    const flights = await Flight.findAll({
+    const flights = (await Flight.findAll({
       include: [
         { model: Airport, as: 'departureAirport' },
         { model: Airport, as: 'arrivalAirport' },
         { model: Airline }
       ]
-    });
-    const airports = await Airport.findAll();
-    const airlines = await Airline.findAll();
+    })).map(f => f.get({ plain: true }));
+    if (flights.length > 0) {
+      console.log('DEBUG FLIGHT:', JSON.stringify(flights[0], null, 2));
+    }
+    const airports = (await Airport.findAll()).map(a => a.get({ plain: true }));
+    const airlines = (await Airline.findAll()).map(a => a.get({ plain: true }));
     res.render('admin/flights', {
       title: 'Управление рейсами',
       user: req.session.user,
@@ -32,9 +35,9 @@ exports.createFlight = async (req, res) => {
     const { flightNumber, departureAirportId, arrivalAirportId, airlineId, departureTime, arrivalTime, price } = req.body;
     await Flight.create({
       flightNumber,
-      departureAirportId,
-      arrivalAirportId,
-      airlineId,
+      departureAirportId: Number(departureAirportId),
+      arrivalAirportId: Number(arrivalAirportId),
+      airlineId: Number(airlineId),
       departureTime,
       arrivalTime,
       price
@@ -62,9 +65,9 @@ exports.updateFlight = async (req, res) => {
     }
     await flight.update({
       flightNumber,
-      departureAirportId,
-      arrivalAirportId,
-      airlineId,
+      departureAirportId: Number(departureAirportId),
+      arrivalAirportId: Number(arrivalAirportId),
+      airlineId: Number(airlineId),
       departureTime,
       arrivalTime,
       price

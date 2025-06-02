@@ -1,10 +1,6 @@
 <div class="container">
     {{> _flightSearchForm}}
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0">
-            <i class="fas fa-plane-departure text-primary me-2"></i>
-            Расписание рейсов
-        </h1>
         {{#if isAdmin}}
         <a href="/flights/create" class="btn btn-primary">
             <i class="fas fa-plus me-2"></i>Добавить рейс
@@ -31,19 +27,26 @@
                     </thead>
                     <tbody>
                         {{#each flights}}
-                        <tr class="fade-in" style="animation-delay: {{@index}}0ms">
+                        <tr class="fade-in" style="animation-delay: {{@index}}0ms"
+                            data-flight-number="{{this.flightNumber}}"
+                            data-airline="{{this.Airline.name}}"
+                            data-departure="{{this.departureAirport.name}} ({{this.departureAirport.code}})"
+                            data-arrival="{{this.arrivalAirport.name}} ({{this.arrivalAirport.code}})"
+                            data-departure-time="{{formatDate this.departureTime}}"
+                            data-arrival-time="{{formatDate this.arrivalTime}}"
+                            {{!-- data-price="{{this.price}}" --}}
+                            {{!-- data-flight-id="{{this.id}}" --}} {{!-- Если понадобится id для кнопки в модальном окне --}}
+                        >
                             <td>{{this.flightNumber}}</td>
                             <td>{{this.Airline.name}}</td>
-                            <td>{{this.departureAirport.name}}</td>
-                            <td>{{this.arrivalAirport.name}}</td>
+                            <td>{{this.departureAirport.city}}</td>
+                            <td>{{this.arrivalAirport.city}}</td>
                             <td>{{formatDate this.departureTime}}</td>
                             <td>{{formatDate this.arrivalTime}}</td>
-                            {{#if isAdmin}}
                             <td>
+                              <button type="button" class="btn btn-info btn-sm details-button me-2">Подробнее</button>
+                              {{#if isAdmin}}
                                 <div class="btn-group">
-                                    <a href="/flights/{{this.id}}" class="btn btn-info btn-sm">
-                                        <i class="fas fa-info-circle"></i>
-                                    </a>
                                     <a href="/flights/{{this.id}}/edit" class="btn btn-warning btn-sm">
                                         <i class="fas fa-edit"></i>
                                     </a>
@@ -53,8 +56,8 @@
                                         </button>
                                     </form>
                                 </div>
-                            </td>
                             {{/if}}
+                            </td>
                         </tr>
                         {{/each}}
                     </tbody>
@@ -62,4 +65,94 @@
             </div>
         </div>
     </div>
+
+    {{#if flights}}
+    {{else}}
+      {{#if searched}}
+      <div class="alert alert-info">
+        <i class="fas fa-info-circle me-2"></i>По вашему запросу рейсов не найдено. Попробуйте изменить параметры поиска.
+      </div>
+      {{/if}}
+    {{/if}}
 </div>
+
+<!-- Модальное окно для деталей рейса -->
+<div class="modal fade" id="flightDetailsModal" tabindex="-1" aria-labelledby="flightDetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="flightDetailsModalLabel">Детали рейса</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong><i class="fas fa-plane me-2"></i>Номер рейса:</strong> <span id="modalFlightNumber"></span></p>
+            <p><strong><i class="fas fa-building me-2"></i>Авиакомпания:</strong> <span id="modalAirline"></span></p>
+            <p><strong><i class="fas fa-plane-departure me-2"></i>Откуда:</strong> <span id="modalDeparture"></span></p>
+          </div>
+          <div class="col-md-6">
+            <p><strong><i class="fas fa-plane-arrival me-2"></i>Куда:</strong> <span id="modalArrival"></span></p>
+            <p><strong><i class="fas fa-clock me-2"></i>Время вылета:</strong> <span id="modalDepartureTime"></span></p>
+            <p><strong><i class="fas fa-clock me-2"></i>Время прилета:</strong> <span id="modalArrivalTime"></span></p>
+          </div>
+        </div>
+        <hr>
+        {{!-- Убрали отображение цены --}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+        {{!-- Опционально: добавить кнопку покупки сюда, если нужно --}}
+        {{!-- <a href="#" id="modalBookButton" class="btn btn-success">Купить билет</a> --}}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const flightDetailsModal = new bootstrap.Modal(document.getElementById('flightDetailsModal'));
+    const modalFlightNumber = document.getElementById('modalFlightNumber');
+    const modalAirline = document.getElementById('modalAirline');
+    const modalDeparture = document.getElementById('modalDeparture');
+    const modalArrival = document.getElementById('modalArrival');
+    const modalDepartureTime = document.getElementById('modalDepartureTime');
+    const modalArrivalTime = document.getElementById('modalArrivalTime');
+    // const modalPrice = document.getElementById('modalPrice'); // Убрали поле цены
+    // const modalBookButton = document.getElementById('modalBookButton'); // если добавите кнопку покупки в модал
+
+    document.querySelectorAll('.details-button').forEach(button => {
+      button.addEventListener('click', function() {
+        const row = this.closest('tr');
+        const flight = {
+          flightNumber: row.dataset.flightNumber,
+          airline: row.dataset.airline,
+          departure: row.dataset.departure,
+          arrival: row.dataset.arrival,
+          departureTime: row.dataset.departureTime,
+          arrivalTime: row.dataset.arrivalTime
+          // price: row.dataset.price // Убрали цену
+          // flightId: row.dataset.flightId // если нужна id для кнопки покупки
+        };
+
+        modalFlightNumber.textContent = flight.flightNumber;
+        modalAirline.textContent = flight.airline;
+        modalDeparture.textContent = flight.departure;
+        modalArrival.textContent = flight.arrival;
+        modalDepartureTime.textContent = flight.departureTime;
+        modalArrivalTime.textContent = flight.arrivalTime;
+        // if (modalBookButton) { // если добавите кнопку покупки в модал
+        //   modalBookButton.href = `/passenger/flights/${flight.flightId}/book`;
+        // }
+
+        flightDetailsModal.show();
+      });
+    });
+
+     // Удаляем старый скрипт, который переключал видимость спанов
+     const oldScript = document.querySelector('script'); // Это очень грубо, возможно нужно более точное селектор
+     if (oldScript && oldScript.textContent.includes('details-button') && oldScript.textContent.includes('full-airport-details')) {
+       // oldScript.remove(); // Закомментировано, так как этот скрипт уже был удален в предыдущем шаге
+     }
+  });
+</script>

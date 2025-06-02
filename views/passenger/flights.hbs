@@ -72,16 +72,27 @@
           {{#each flights}}
           <tr>
             <td>{{flightNumber}}</td>
-            <td>{{departureAirport.name}} ({{departureAirport.code}})</td>
-            <td>{{arrivalAirport.name}} ({{arrivalAirport.code}})</td>
+            <td>
+              {{departureAirport.city}}
+              <span class="full-airport-details" style="display: none;">
+                - {{departureAirport.name}} ({{departureAirport.code}})
+              </span>
+            </td>
+            <td>
+              {{arrivalAirport.city}}
+              <span class="full-airport-details" style="display: none;">
+                - {{arrivalAirport.name}} ({{arrivalAirport.code}})
+              </span>
+            </td>
             <td>{{formatDate departureTime}}</td>
             <td>{{formatDate arrivalTime}}</td>
             <td>{{Airline.name}}</td>
             <td>{{price}} ₽</td>
             <td>
-              <form action="/passenger/flights/{{id}}/book" method="POST">
+              <form action="/passenger/flights/{{id}}/book" method="POST" class="d-inline">
                 <button type="submit" class="btn btn-success btn-sm">Купить</button>
               </form>
+              <button type="button" class="btn btn-info btn-sm details-button">Подробнее</button>
             </td>
           </tr>
           {{/each}}
@@ -97,3 +108,20 @@
     {{/if}}
   {{/if}}
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const detailsButtons = document.querySelectorAll('.details-button');
+
+    detailsButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const row = this.closest('tr');
+        const detailsSpans = row.querySelectorAll('.full-airport-details');
+
+        detailsSpans.forEach(span => {
+          span.style.display = span.style.display === 'none' ? 'inline' : 'none';
+        });
+      });
+    });
+  });
+</script>

@@ -91,7 +91,12 @@ exports.searchFlights = async (req, res) => {
           { model: Airline }
         ]
       })).map(f => f.get({ plain: true }));
-       return res.render('flights/index', { flights, searchParams: req.query, isAdmin: req.user.role === 'admin' });
+       return res.render('flights/index', { 
+         flights, 
+         searchParams: req.query, 
+         isAdmin: req.user?.role === 'admin',
+         searched: false
+       });
     }
 
     // Convert date to start and end of the day for searching
@@ -101,8 +106,8 @@ exports.searchFlights = async (req, res) => {
     endDate.setHours(23, 59, 59, 999);
 
     // Find departure and arrival airport IDs based on name/code input
-    const depAirport = await Airport.findOne({ where: { name: departureAirport } });
-    const arrAirport = await Airport.findOne({ where: { name: arrivalAirport } });
+    const depAirport = await Airport.findOne({ where: { [require('sequelize').Op.or]: [{ name: departureAirport }, { city: departureAirport }] } });
+    const arrAirport = await Airport.findOne({ where: { [require('sequelize').Op.or]: [{ name: arrivalAirport }, { city: arrivalAirport }] } });
 
     let flights = [];
 
@@ -123,13 +128,11 @@ exports.searchFlights = async (req, res) => {
       })).map(f => f.get({ plain: true }));
     }
 
-    // For roundTrip, you would typically perform another search for the return leg
-    // based on a return date input. This is not included in this basic implementation.
-
     res.render('flights/index', { 
         flights, 
         searchParams: req.query,
-        isAdmin: req.user.role === 'admin'
+        isAdmin: req.user?.role === 'admin',
+        searched: true
     });
 
   } catch (error) {

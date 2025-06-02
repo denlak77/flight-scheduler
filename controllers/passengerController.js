@@ -4,7 +4,7 @@ const { Op } = require('sequelize');
 // Панель управления пассажира - теперь просто перенаправляет на расписание рейсов
 exports.getDashboard = async (req, res) => {
   try {
-    res.redirect('/flights');
+    res.redirect('/');
   } catch (error) {
     console.error(error);
     res.status(500).render('error', {

@@ -47,11 +47,6 @@
                         {{/if}}
                         {{#if (eq user.role 'passenger')}}
                             <li class="nav-item">
-                                <a class="nav-link" href="/passenger/dashboard">
-                                    <i class="fas fa-ticket-alt me-1"></i>Мои билеты
-                                </a>
-                            </li>
-                            <li class="nav-item">
                                 <a class="nav-link" href="/passenger/support">
                                     <i class="fas fa-comments me-1"></i>Поддержка
                                 </a>
@@ -91,12 +86,6 @@
     <main class="container py-4 fade-in">
         {{{body}}}
     </main>
-
-    <footer class="footer">
-        <div class="container text-center">
-            <span>© 2024 Система бронирования авиабилетов</span>
-        </div>
-    </footer>
 
     <!-- Кнопка поддержки -->
     {{#if user}}

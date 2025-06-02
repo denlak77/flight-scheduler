@@ -1,7 +1,7 @@
 // Бизнес-логика для рейсов
 const Flight = require('../models/flight');
-const Airport = require('../models/Airport');
-const Airline = require('../models/Airline');
+const Airport = require('../models/airport');
+const Airline = require('../models/airline');
 
 exports.getAllFlights = async (req, res) => {
   try {
@@ -12,7 +12,7 @@ exports.getAllFlights = async (req, res) => {
         { model: Airline }
       ]
     })).map(f => f.get({ plain: true }));
-    res.render('flights/index', { flights });
+    res.render('flights/index', { flights, isAdmin: req.user.role === 'admin' });
   } catch (error) {
     res.status(500).render('error', { error: 'Failed to fetch flights' });
   }
@@ -74,6 +74,67 @@ exports.deleteFlight = async (req, res) => {
     res.redirect('/flights');
   } catch (error) {
     res.status(500).render('error', { error: 'Failed to delete flight' });
+  }
+};
+
+exports.searchFlights = async (req, res) => {
+  try {
+    const { departureAirport, arrivalAirport, departureDate, roundTrip } = req.query;
+
+    // Basic validation (can be enhanced)
+    if (!departureAirport || !arrivalAirport || !departureDate) {
+      // If required parameters are missing, redirect to the main flights page or show an error
+      const flights = (await Flight.findAll({
+        include: [
+          { model: Airport, as: 'departureAirport' },
+          { model: Airport, as: 'arrivalAirport' },
+          { model: Airline }
+        ]
+      })).map(f => f.get({ plain: true }));
+       return res.render('flights/index', { flights, searchParams: req.query, isAdmin: req.user.role === 'admin' });
+    }
+
+    // Convert date to start and end of the day for searching
+    const startDate = new Date(departureDate);
+    startDate.setHours(0, 0, 0, 0);
+    const endDate = new Date(departureDate);
+    endDate.setHours(23, 59, 59, 999);
+
+    // Find departure and arrival airport IDs based on name/code input
+    const depAirport = await Airport.findOne({ where: { name: departureAirport } });
+    const arrAirport = await Airport.findOne({ where: { name: arrivalAirport } });
+
+    let flights = [];
+
+    if (depAirport && arrAirport) {
+       flights = (await Flight.findAll({
+        where: {
+          departureAirportId: depAirport.id,
+          arrivalAirportId: arrAirport.id,
+          departureTime: {
+            [require('sequelize').Op.between]: [startDate, endDate]
+          }
+        },
+        include: [
+          { model: Airport, as: 'departureAirport' },
+          { model: Airport, as: 'arrivalAirport' },
+          { model: Airline }
+        ]
+      })).map(f => f.get({ plain: true }));
+    }
+
+    // For roundTrip, you would typically perform another search for the return leg
+    // based on a return date input. This is not included in this basic implementation.
+
+    res.render('flights/index', { 
+        flights, 
+        searchParams: req.query,
+        isAdmin: req.user.role === 'admin'
+    });
+
+  } catch (error) {
+    console.error('Error searching flights:', error);
+    res.status(500).render('error', { error: 'Failed to search flights' });
   }
 };
 

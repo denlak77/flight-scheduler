@@ -1,16 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const flightController = require('../controllers/flightController');
-const { checkAuth } = require('../middleware/auth');
+const { checkAuth, checkRole } = require('../middleware/auth');
 
 // Применяем middleware checkAuth ко всем маршрутам в этом роутере
 router.use(checkAuth);
 
-// Get all flights
+// Get all flights - доступно всем авторизованным пользователям
 router.get('/', flightController.getAllFlights);
 
-// Get flight details
+// Add flight search route
+router.get('/search', flightController.searchFlights);
+
+// Get flight details - доступно всем авторизованным пользователям
 router.get('/:id', flightController.getFlightById);
+
+// Все маршруты ниже требуют роль администратора
+router.use(checkRole(['admin']));
 
 // Create new flight
 router.get('/create', (req, res) => {

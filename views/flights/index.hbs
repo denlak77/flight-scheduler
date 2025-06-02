@@ -1,12 +1,15 @@
 <div class="container">
+    {{> _flightSearchForm}}
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="mb-0">
             <i class="fas fa-plane-departure text-primary me-2"></i>
             Расписание рейсов
         </h1>
+        {{#if isAdmin}}
         <a href="/flights/create" class="btn btn-primary">
             <i class="fas fa-plus me-2"></i>Добавить рейс
         </a>
+        {{/if}}
     </div>
 
     <div class="card fade-in">
@@ -21,7 +24,9 @@
                             <th><i class="fas fa-plane-arrival me-2"></i>Куда</th>
                             <th><i class="fas fa-clock me-2"></i>Время вылета</th>
                             <th><i class="fas fa-clock me-2"></i>Время прилета</th>
+                            {{#if isAdmin}}
                             <th><i class="fas fa-cogs me-2"></i>Действия</th>
+                            {{/if}}
                         </tr>
                     </thead>
                     <tbody>
@@ -33,6 +38,7 @@
                             <td>{{this.arrivalAirport.name}}</td>
                             <td>{{formatDate this.departureTime}}</td>
                             <td>{{formatDate this.arrivalTime}}</td>
+                            {{#if isAdmin}}
                             <td>
                                 <div class="btn-group">
                                     <a href="/flights/{{this.id}}" class="btn btn-info btn-sm">
@@ -48,6 +54,7 @@
                                     </form>
                                 </div>
                             </td>
+                            {{/if}}
                         </tr>
                         {{/each}}
                     </tbody>

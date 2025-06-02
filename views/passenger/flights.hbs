@@ -1,7 +1,59 @@
 <div class="container">
-  <h1 class="mb-4">Доступные рейсы</h1>
+  <h1 class="mb-4">Поиск рейсов</h1>
+  
+  <!-- Форма поиска рейсов -->
+  <div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">Параметры поиска</h5>
+    </div>
+    <div class="card-body">
+      <form action="/passenger/flights" method="GET" class="row g-3">
+        <div class="col-md-6">
+          <label for="departureAirport" class="form-label">Откуда</label>
+          <select class="form-select" id="departureAirport" name="departureAirport" required>
+            <option value="" selected disabled>Выберите город отправления</option>
+            {{#each airports}}
+              <option value="{{id}}">{{city}} - {{name}} ({{code}})</option>
+            {{/each}}
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="arrivalAirport" class="form-label">Куда</label>
+          <select class="form-select" id="arrivalAirport" name="arrivalAirport" required>
+            <option value="" selected disabled>Выберите город прибытия</option>
+            {{#each airports}}
+              <option value="{{id}}">{{city}} - {{name}} ({{code}})</option>
+            {{/each}}
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="departureDate" class="form-label">Когда</label>
+          <input type="date" class="form-control" id="departureDate" name="departureDate" required>
+        </div>
+        <div class="col-md-6">
+          <label for="returnDate" class="form-label">Обратно</label>
+          <input type="date" class="form-control" id="returnDate" name="returnDate">
+        </div>
+        <div class="col-md-6">
+          <label for="passengers" class="form-label">Пассажиры</label>
+          <select class="form-select" id="passengers" name="passengers">
+            <option value="1" selected>1 пассажир</option>
+            <option value="2">2 пассажира</option>
+            <option value="3">3 пассажира</option>
+            <option value="4">4 пассажира</option>
+          </select>
+        </div>
+        <div class="col-md-6 d-flex align-items-end">
+          <button type="submit" class="btn btn-primary btn-lg w-100">Найти билеты</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Результаты поиска -->
+  {{#if flights.length}}
   <div class="card">
-    <div class="card-header">Список рейсов</div>
+    <div class="card-header">Найденные рейсы</div>
     <div class="card-body">
       <table class="table">
         <thead>
@@ -37,4 +89,11 @@
       </table>
     </div>
   </div>
-</div> 
+  {{else}}
+    {{#if searched}}
+    <div class="alert alert-info">
+      <i class="fas fa-info-circle me-2"></i>По вашему запросу рейсов не найдено. Попробуйте изменить параметры поиска.
+    </div>
+    {{/if}}
+  {{/if}}
+</div>

@@ -89,7 +89,6 @@
               <th>Время вылета</th>
               <th>Время прилета</th>
               <th>Авиакомпания</th>
-              <th>Цена</th>
               <th>Действия</th>
             </tr>
           </thead>
@@ -102,7 +101,6 @@
               <td>{{formatDate departureTime}}</td>
               <td>{{formatDate arrivalTime}}</td>
               <td>{{Airline.name}}</td>
-              <td>{{price}} ₽</td>
               <td>
                 <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editFlight{{id}}">Редактировать</button>
                 <form action="/admin/flights/{{id}}?_method=DELETE" method="POST" class="d-inline">

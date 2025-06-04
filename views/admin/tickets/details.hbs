@@ -1,11 +1,13 @@
+{{> header}}
+
 <div class="container">
     <div class="row mb-4">
         <div class="col-12">
             <div class="card fade-in">
                 <div class="card-body">
                     <h1 class="mb-0">
-                        <i class="fas fa-ticket-alt text-primary me-2"></i>
-                        Детали билета #{{ticket.id}}
+                        <i class="fas fa-info-circle text-primary me-2"></i>
+                        Информация о билете
                     </h1>
                 </div>
             </div>
@@ -15,108 +17,15 @@
     <div class="row">
         <div class="col-md-8 mx-auto">
             <div class="card fade-in" style="animation-delay: 0.2s;">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">
-                        <i class="fas fa-info-circle text-primary me-2"></i>
-                        Информация о билете
-                    </h5>
-                </div>
                 <div class="card-body">
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <h6 class="text-muted mb-2">
-                                <i class="fas fa-user me-2"></i>Пассажир
-                            </h6>
-                            <p class="mb-0">{{ticket.user.name}}</p>
-                        </div>
-                        <div class="col-md-6">
-                            <h6 class="text-muted mb-2">
-                                <i class="fas fa-plane me-2"></i>Рейс
-                            </h6>
-                            <p class="mb-0">{{ticket.flight.number}}</p>
-                        </div>
-                    </div>
-
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <h6 class="text-muted mb-2">
-                                <i class="fas fa-calendar me-2"></i>Дата
-                            </h6>
-                            <p class="mb-0">{{formatDate ticket.date}}</p>
-                        </div>
-                        <div class="col-md-6">
-                            <h6 class="text-muted mb-2">
-                                <i class="fas fa-chair me-2"></i>Место
-                            </h6>
-                            <p class="mb-0">{{ticket.seat}}</p>
-                        </div>
-                    </div>
-
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <h6 class="text-muted mb-2">
-                                <i class="fas fa-ruble-sign me-2"></i>Цена
-                            </h6>
-                            <p class="mb-0">{{ticket.price}} ₽</p>
-                        </div>
-                        <div class="col-md-6">
-                            <h6 class="text-muted mb-2">
-                                <i class="fas fa-clock me-2"></i>Время вылета
-                            </h6>
-                            <p class="mb-0">{{formatTime ticket.flight.departureTime}}</p>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h6 class="text-muted mb-2">
-                                <i class="fas fa-plane-departure me-2"></i>Аэропорт вылета
-                            </h6>
-                            <p class="mb-0">{{ticket.flight.departureAirport.name}} ({{ticket.flight.departureAirport.code}})</p>
-                        </div>
-                        <div class="col-md-6">
-                            <h6 class="text-muted mb-2">
-                                <i class="fas fa-plane-arrival me-2"></i>Аэропорт прилета
-                            </h6>
-                            <p class="mb-0">{{ticket.flight.arrivalAirport.name}} ({{ticket.flight.arrivalAirport.code}})</p>
-                        </div>
-                    </div>
-
-                    <hr>
-
-                    <div class="d-grid gap-2">
-                        <a href="/admin/tickets/{{ticket.id}}/edit" class="btn btn-warning">
-                            <i class="fas fa-edit me-2"></i>Редактировать
-                        </a>
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                            <i class="fas fa-trash me-2"></i>Удалить
-                        </button>
-                        <a href="/admin/tickets" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left me-2"></i>Вернуться к списку
-                        </a>
-                    </div>
+                    <p class="alert alert-info">Функционал просмотра деталей билета был удален.</p>
+                    <a href="/admin/tickets" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Вернуться к списку (недоступно)
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Подтверждение удаления</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                Вы уверены, что хотите удалить билет #{{ticket.id}}?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                <form action="/admin/tickets/{{ticket.id}}?_method=DELETE" method="POST" class="d-inline">
-                    <button type="submit" class="btn btn-danger">Удалить</button>
-                </form>
-            </div>
-        </div>
-    </div> 
+{{> footer}} 

@@ -46,6 +46,13 @@ exports.getUsers = async (req, res) => {
   }
 };
 
+exports.getCreateUserPage = (req, res) => {
+  res.render('admin/users/new', {
+    title: 'Добавление нового пользователя',
+    user: req.session.user
+  });
+};
+
 exports.createUser = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;

@@ -35,7 +35,6 @@
                                     <th><i class="fas fa-clock me-2"></i>Время вылета</th>
                                     <th><i class="fas fa-clock me-2"></i>Время прилета</th>
                                     <th><i class="fas fa-building me-2"></i>Авиакомпания</th>
-                                    <th><i class="fas fa-ruble-sign me-2"></i>Цена</th>
                                     <th><i class="fas fa-cogs me-2"></i>Действия</th>
                                 </tr>
                             </thead>
@@ -48,7 +47,6 @@
                                     <td>{{formatDate departureTime}}</td>
                                     <td>{{formatDate arrivalTime}}</td>
                                     <td>{{Airline.name}}</td>
-                                    <td>{{price}} ₽</td>
                                     <td>
                                         <div class="btn-group">
                                             <a href="/operator/flights/{{id}}/edit" class="btn btn-warning btn-sm">

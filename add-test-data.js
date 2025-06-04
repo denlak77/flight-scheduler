@@ -5,9 +5,9 @@ async function addTestData() {
     await sequelize.sync();
     // Добавляем аэропорты
     await Airport.bulkCreate([
-      { name: 'Шереметьево', code: 'SVO', city: 'Москва', country: 'Россия' },
-      { name: 'Пулково', code: 'LED', city: 'Санкт-Петербург', country: 'Россия' },
-      { name: 'Домодедово', code: 'DME', city: 'Москва', country: 'Россия' }
+      { name: 'Sheremetyevo', code: 'SVO', city: 'Moscow', country: 'Russia' },
+      { name: 'Pulkovo', code: 'LED', city: 'Saint Petersburg', country: 'Russia' },
+      { name: 'Domodedovo', code: 'DME', city: 'Moscow', country: 'Russia' }
     ], { ignoreDuplicates: true });
 
     // Добавляем авиакомпании

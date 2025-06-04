@@ -11,12 +11,18 @@ exports.getDashboard = async (req, res) => {
       ]
     });
     
-    const tickets = await Ticket.findAll({
-      include: [
-        { model: Flight },
-        { model: User }
-      ]
-    });
+    let tickets = []; // Initialize tickets as an empty array
+    try {
+      tickets = await Ticket.findAll({
+        include: [
+          { model: Flight },
+          { model: User }
+        ]
+      });
+    } catch (ticketError) {
+      console.error('Error fetching tickets for operator dashboard:', ticketError);
+      // Continue without tickets if there's an error fetching them
+    }
 
     res.render('operator/dashboard', {
       title: 'Панель оператора',

@@ -25,11 +25,13 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
+{{#unless (eq user.role 'operator')}}
                     <li class="nav-item">
                         <a class="nav-link" href="/passenger/flights">
                             <i class="fas fa-calendar-alt me-1"></i>Рейсы
                         </a>
                     </li>
+{{/unless}}
                     {{#if user}}
                         {{#if (eq user.role 'admin')}}
                             <li class="nav-item">

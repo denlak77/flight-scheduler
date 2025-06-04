@@ -46,19 +46,19 @@ const sampleData = async () => {
         // Добавление примеров аэропортов (используем findOrCreate)
         const [svo] = await Airport.findOrCreate({
             where: { code: 'SVO' },
-            defaults: { name: 'Шереметьево', city: 'Москва', country: 'Russia' }
+            defaults: { name: 'Sheremetyevo', city: 'Moscow', country: 'Russia' }
         });
         const [dme] = await Airport.findOrCreate({
             where: { code: 'DME' },
-            defaults: { name: 'Домодедово', city: 'Москва', country: 'Russia' }
+            defaults: { name: 'Domodedovo', city: 'Moscow', country: 'Russia' }
         });
         const [vko] = await Airport.findOrCreate({
             where: { code: 'VKO' },
-            defaults: { name: 'Внуково', city: 'Москва', country: 'Russia' }
+            defaults: { name: 'Vnukovo', city: 'Moscow', country: 'Russia' }
         });
         const [pul] = await Airport.findOrCreate({
-            where: { code: 'LED' }, // Используем код IATA LED для Пулково
-            defaults: { name: 'Пулково', city: 'Санкт-Петербург', country: 'Russia' }
+            where: { code: 'LED' }, // Using IATA code LED for Pulkovo
+            defaults: { name: 'Pulkovo', city: 'Saint Petersburg', country: 'Russia' }
         });
          const [dubai] = await Airport.findOrCreate({
             where: { code: 'DXB' },

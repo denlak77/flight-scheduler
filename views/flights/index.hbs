@@ -34,8 +34,6 @@
                             data-arrival="{{this.arrivalAirport.name}} ({{this.arrivalAirport.code}})"
                             data-departure-time="{{formatDate this.departureTime}}"
                             data-arrival-time="{{formatDate this.arrivalTime}}"
-                            {{!-- data-price="{{this.price}}" --}}
-                            {{!-- data-flight-id="{{this.id}}" --}} {{!-- Если понадобится id для кнопки в модальном окне --}}
                         >
                             <td>{{this.flightNumber}}</td>
                             <td>{{this.Airline.name}}</td>
@@ -98,12 +96,9 @@
           </div>
         </div>
         <hr>
-        {{!-- Убрали отображение цены --}}
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-        {{!-- Опционально: добавить кнопку покупки сюда, если нужно --}}
-        {{!-- <a href="#" id="modalBookButton" class="btn btn-success">Купить билет</a> --}}
       </div>
     </div>
   </div>
@@ -118,22 +113,15 @@
     const modalArrival = document.getElementById('modalArrival');
     const modalDepartureTime = document.getElementById('modalDepartureTime');
     const modalArrivalTime = document.getElementById('modalArrivalTime');
-    // const modalPrice = document.getElementById('modalPrice'); // Убрали поле цены
-    // const modalBookButton = document.getElementById('modalBookButton'); // если добавите кнопку покупки в модал
 
     // Функция для обновления модального окна с деталями рейса
     const updateFlightDetailsModal = (flight) => {
       modalFlightNumber.textContent = flight.flightNumber;
-      modalAirline.textContent = flight.Airline.name;
-      modalDeparture.textContent = `${flight.departureAirport.name} (${flight.departureAirport.code})`;
-      modalArrival.textContent = `${flight.arrivalAirport.name} (${flight.arrivalAirport.code})`;
-      modalDepartureTime.textContent = new Date(flight.departureTime).toLocaleString();
-      modalArrivalTime.textContent = new Date(flight.arrivalTime).toLocaleString();
-      // modalPrice.textContent = `${flight.price} ₽`; // Убрали отображение цены
-
-      // if (modalBookButton) { // если добавите кнопку покупки в модал
-      //   modalBookButton.href = `/passenger/flights/${flight.id}/book`;
-      // }
+      modalAirline.textContent = flight.airline;
+      modalDeparture.textContent = flight.departure;
+      modalArrival.textContent = flight.arrival;
+      modalDepartureTime.textContent = flight.departureTime;
+      modalArrivalTime.textContent = flight.arrivalTime;
     };
 
     document.querySelectorAll('.details-button').forEach(button => {
@@ -146,8 +134,6 @@
           arrival: row.dataset.arrival,
           departureTime: row.dataset.departureTime,
           arrivalTime: row.dataset.arrivalTime
-          // price: row.dataset.price // Убрали цену
-          // flightId: row.dataset.flightId // если нужна id для кнопки покупки
         };
 
         updateFlightDetailsModal(flight);

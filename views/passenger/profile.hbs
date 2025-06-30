@@ -1,0 +1,32 @@
+<h2>Профиль</h2>
+<form method="POST" action="/passenger/profile" class="mb-4" autocomplete="off">
+  <div class="mb-3">
+    <label for="name" class="form-label">Имя</label>
+    <input type="text" class="form-control" id="name" name="name" value="{{user.name}}" required>
+  </div>
+  <div class="mb-3">
+    <label for="email" class="form-label">Email</label>
+    <input type="email" class="form-control" id="email" name="email" value="{{user.email}}" required>
+  </div>
+  <hr>
+  <h5>Смена пароля</h5>
+  <div class="mb-3">
+    <label for="currentPassword" class="form-label">Текущий пароль</label>
+    <input type="password" class="form-control" id="currentPassword" name="currentPassword" autocomplete="new-password">
+  </div>
+  <div class="mb-3">
+    <label for="newPassword" class="form-label">Новый пароль</label>
+    <input type="password" class="form-control" id="newPassword" name="newPassword" autocomplete="new-password">
+  </div>
+  <div class="mb-3">
+    <label for="confirmPassword" class="form-label">Подтвердите новый пароль</label>
+    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" autocomplete="new-password">
+  </div>
+  {{#if error}}
+    <div class="alert alert-danger">{{error}}</div>
+  {{/if}}
+  {{#if success}}
+    <div class="alert alert-success">{{success}}</div>
+  {{/if}}
+  <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+</form> 

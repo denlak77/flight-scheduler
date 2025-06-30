@@ -5,8 +5,7 @@ const sequelize = require('../config/db');
 const Flight = sequelize.define('Flight', {
   flightNumber: { type: DataTypes.STRING, allowNull: false },
   departureTime: { type: DataTypes.DATE, allowNull: false },
-  arrivalTime: { type: DataTypes.DATE, allowNull: false },
-  price: { type: DataTypes.DECIMAL(10, 2), allowNull: false }
+  arrivalTime: { type: DataTypes.DATE, allowNull: false }
 });
 
 module.exports = Flight;

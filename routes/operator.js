@@ -17,9 +17,7 @@ router.get('/flights', operatorController.getFlights);
 router.post('/flights', operatorController.createFlight);
 router.put('/flights/:id', operatorController.updateFlight);
 router.delete('/flights/:id', operatorController.deleteFlight);
-
-// Управление билетами
-router.get('/tickets', operatorController.getTickets);
-router.delete('/tickets/:id', operatorController.cancelTicket);
+router.get('/flights/:id/edit', operatorController.renderEditFlight);
+router.get('/flights/new', operatorController.renderNewFlight);
 
 module.exports = router; 

@@ -30,6 +30,12 @@ app.engine('hbs', exphbs.engine({
     eq: function(v1, v2) {
       return v1 === v2;
     },
+    formatDateTime: function(date) {
+      if (!date) return '';
+      const d = new Date(date);
+      const pad = n => n.toString().padStart(2, '0');
+      return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + 'T' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+    },
     formatDateTimeLocal: function(date) {
       if (!date) return '';
       const d = new Date(date);

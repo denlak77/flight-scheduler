@@ -51,43 +51,15 @@
                                     <td>{{formatDate createdAt}}</td>
                                     <td>
                                         <div class="btn-group">
-                                            <a href="/admin/users/{{id}}/edit" class="btn btn-warning btn-sm">
+                                            <!--<a href="/admin/users/{{id}}/edit" class="btn btn-warning btn-sm">
                                                 <i class="fas fa-edit"></i>
-                                            </a>
+                                            </a>-->
                                             <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteUser{{id}}">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
                                     </td>
                                 </tr>
-
-                                <!-- Модальное окно удаления -->
-                                <div class="modal fade" id="deleteUser{{id}}" tabindex="-1">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">
-                                                    <i class="fas fa-exclamation-triangle text-warning me-2"></i>
-                                                    Подтверждение удаления
-                                                </h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>Вы уверены, что хотите удалить пользователя {{name}}?</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                                    <i class="fas fa-times me-2"></i>Отмена
-                                                </button>
-                                                <form action="/admin/users/{{id}}?_method=DELETE" method="POST" class="d-inline">
-                                                    <button type="submit" class="btn btn-danger">
-                                                        <i class="fas fa-trash me-2"></i>Удалить
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                                 {{/each}}
                             </tbody>
                         </table>
@@ -96,4 +68,34 @@
             </div>
         </div>
     </div>
-</div> 
+</div>
+
+<!-- Все модалки вынесены вне таблицы и .container -->
+{{#each users}}
+<div class="modal fade" id="deleteUser{{id}}" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="fas fa-exclamation-triangle text-warning me-2"></i>
+          Подтверждение удаления
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p>Вы уверены, что хотите удалить пользователя {{name}}?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-2"></i>Отмена
+        </button>
+        <form action="/admin/users/{{id}}?_method=DELETE" method="POST" class="d-inline">
+          <button type="submit" class="btn btn-danger">
+            <i class="fas fa-trash me-2"></i>Удалить
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{{/each}} 

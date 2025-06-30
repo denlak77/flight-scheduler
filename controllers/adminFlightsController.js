@@ -32,15 +32,14 @@ exports.getFlights = async (req, res) => {
 
 exports.createFlight = async (req, res) => {
   try {
-    const { flightNumber, departureAirportId, arrivalAirportId, airlineId, departureTime, arrivalTime, price } = req.body;
+    const { flightNumber, departureAirportId, arrivalAirportId, airlineId, departureTime, arrivalTime } = req.body;
     await Flight.create({
       flightNumber,
       departureAirportId: Number(departureAirportId),
       arrivalAirportId: Number(arrivalAirportId),
       airlineId: Number(airlineId),
       departureTime,
-      arrivalTime,
-      price
+      arrivalTime
     });
     res.redirect('/admin/flights');
   } catch (error) {
@@ -55,7 +54,7 @@ exports.createFlight = async (req, res) => {
 exports.updateFlight = async (req, res) => {
   try {
     const { id } = req.params;
-    const { flightNumber, departureAirportId, arrivalAirportId, airlineId, departureTime, arrivalTime, price } = req.body;
+    const { flightNumber, departureAirportId, arrivalAirportId, airlineId, departureTime, arrivalTime } = req.body;
     const flight = await Flight.findByPk(id);
     if (!flight) {
       return res.status(404).render('error', {
@@ -69,8 +68,7 @@ exports.updateFlight = async (req, res) => {
       arrivalAirportId: Number(arrivalAirportId),
       airlineId: Number(airlineId),
       departureTime,
-      arrivalTime,
-      price
+      arrivalTime
     });
     res.redirect('/admin/flights');
   } catch (error) {

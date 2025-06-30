@@ -12,11 +12,15 @@ router.get('/dashboard', passengerController.getDashboard);
 // Просмотр доступных рейсов
 router.get('/flights', passengerController.getAvailableFlights);
 
-// Удалены маршруты для бронирования и отмены билетов
+// Удаляю закомментированные маршруты, связанные с билетами
 // router.post('/flights/:flightId/book', passengerController.bookTicket);
 // router.delete('/tickets/:ticketId', passengerController.cancelTicket);
 
 // Страница поддержки
 router.get('/support', passengerController.getSupport);
+
+// Страница профиля
+router.get('/profile', passengerController.getProfile);
+router.post('/profile', passengerController.updateProfile);
 
 module.exports = router;

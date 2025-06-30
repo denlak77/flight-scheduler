@@ -51,14 +51,14 @@
 
     <div class="row">
         <div class="col-12">
-            <div class="card fade-in" style="animation-delay: 0.6s;">
+            <div class="card fade-in" style="animation-delay: 0.6s; max-height: 500px; overflow: hidden;">
                 <div class="card-header">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-history text-primary me-2"></i>
                         Последние рейсы
                     </h5>
                 </div>
-                <div class="card-body">
+                <div class="card-body" style="overflow-y: auto; max-height: 400px;">
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead>
@@ -89,4 +89,282 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card fade-in" style="animation-delay: 0.8s;">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>
+                        <i class="fas fa-plane-departure text-primary me-2"></i>
+                        Доступные аэропорты
+                    </span>
+                    <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#addAirportModal">
+                        <i class="fas fa-plus me-1"></i>Добавить аэропорт
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Название</th>
+                                    <th>Город</th>
+                                    <th>Страна</th>
+                                    <th>Код</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each airports}}
+                                <tr>
+                                    <td>{{name}}</td>
+                                    <td>{{city}}</td>
+                                    <td>{{country}}</td>
+                                    <td>{{code}}</td>
+                                    <td>
+                                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editAirportModal{{id}}">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteAirportModal{{id}}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card fade-in" style="animation-delay: 1.0s;">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>
+                        <i class="fas fa-building text-primary me-2"></i>
+                        Доступные авиакомпании
+                    </span>
+                    <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#addAirlineModal">
+                        <i class="fas fa-plus me-1"></i>Добавить авиакомпанию
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Название</th>
+                                    <th>Код</th>
+                                    <th>Страна</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each airlines}}
+                                <tr>
+                                    <td>{{name}}</td>
+                                    <td>{{code}}</td>
+                                    <td>{{country}}</td>
+                                    <td>
+                                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editAirlineModal{{id}}">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteAirlineModal{{id}}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно добавления аэропорта -->
+    <div class="modal fade" id="addAirportModal" tabindex="-1" aria-labelledby="addAirportModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form action="/admin/dashboard/airports" method="POST">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addAirportModalLabel">Добавить аэропорт</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="airportName" class="form-label">Название</label>
+                <input type="text" class="form-control" id="airportName" name="name" required>
+              </div>
+              <div class="mb-3">
+                <label for="airportCity" class="form-label">Город</label>
+                <input type="text" class="form-control" id="airportCity" name="city" required>
+              </div>
+              <div class="mb-3">
+                <label for="airportCountry" class="form-label">Страна</label>
+                <input type="text" class="form-control" id="airportCountry" name="country" required>
+              </div>
+              <div class="mb-3">
+                <label for="airportCode" class="form-label">Код</label>
+                <input type="text" class="form-control" id="airportCode" name="code" maxlength="5" required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+              <button type="submit" class="btn btn-primary">Добавить</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Все модальные окна для аэропортов -->
+    {{#each airports}}
+    <!-- Модальное окно редактирования аэропорта -->
+    <div class="modal fade" id="editAirportModal{{id}}" tabindex="-1" aria-labelledby="editAirportModalLabel{{id}}" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form action="/admin/dashboard/airports/{{id}}?_method=PUT" method="POST">
+            <div class="modal-header">
+              <h5 class="modal-title" id="editAirportModalLabel{{id}}">Редактировать аэропорт</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label class="form-label">Название</label>
+                <input type="text" class="form-control" name="name" value="{{name}}" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Город</label>
+                <input type="text" class="form-control" name="city" value="{{city}}" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Страна</label>
+                <input type="text" class="form-control" name="country" value="{{country}}" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Код</label>
+                <input type="text" class="form-control" name="code" value="{{code}}" maxlength="5" required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+              <button type="submit" class="btn btn-primary">Сохранить</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- Модальное окно подтверждения удаления аэропорта -->
+    <div class="modal fade" id="deleteAirportModal{{id}}" tabindex="-1" aria-labelledby="deleteAirportModalLabel{{id}}" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form action="/admin/dashboard/airports/{{id}}?_method=DELETE" method="POST">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deleteAirportModalLabel{{id}}">Удалить аэропорт</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+              <p>Вы уверены, что хотите удалить аэропорт <strong>{{name}}</strong> ({{code}})?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+              <button type="submit" class="btn btn-danger">Удалить</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    {{/each}}
+
+    <!-- Модальное окно добавления авиакомпании -->
+    <div class="modal fade" id="addAirlineModal" tabindex="-1" aria-labelledby="addAirlineModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form action="/admin/dashboard/airlines" method="POST">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addAirlineModalLabel">Добавить авиакомпанию</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="airlineName" class="form-label">Название</label>
+                <input type="text" class="form-control" id="airlineName" name="name" required>
+              </div>
+              <div class="mb-3">
+                <label for="airlineCode" class="form-label">Код</label>
+                <input type="text" class="form-control" id="airlineCode" name="code" maxlength="5" required>
+              </div>
+              <div class="mb-3">
+                <label for="airlineCountry" class="form-label">Страна</label>
+                <input type="text" class="form-control" id="airlineCountry" name="country">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+              <button type="submit" class="btn btn-primary">Добавить</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Все модальные окна для авиакомпаний -->
+    {{#each airlines}}
+    <!-- Модальное окно редактирования авиакомпании -->
+    <div class="modal fade" id="editAirlineModal{{id}}" tabindex="-1" aria-labelledby="editAirlineModalLabel{{id}}" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form action="/admin/dashboard/airlines/{{id}}?_method=PUT" method="POST">
+            <div class="modal-header">
+              <h5 class="modal-title" id="editAirlineModalLabel{{id}}">Редактировать авиакомпанию</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label class="form-label">Название</label>
+                <input type="text" class="form-control" name="name" value="{{name}}" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Код</label>
+                <input type="text" class="form-control" name="code" value="{{code}}" maxlength="5" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Страна</label>
+                <input type="text" class="form-control" name="country" value="{{country}}">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+              <button type="submit" class="btn btn-primary">Сохранить</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- Модальное окно подтверждения удаления авиакомпании -->
+    <div class="modal fade" id="deleteAirlineModal{{id}}" tabindex="-1" aria-labelledby="deleteAirlineModalLabel{{id}}" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form action="/admin/dashboard/airlines/{{id}}?_method=DELETE" method="POST">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deleteAirlineModalLabel{{id}}">Удалить авиакомпанию</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+              <p>Вы уверены, что хотите удалить авиакомпанию <strong>{{name}}</strong> ({{code}})?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+              <button type="submit" class="btn btn-danger">Удалить</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    {{/each}}
 </div> 

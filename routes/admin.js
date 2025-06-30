@@ -8,6 +8,12 @@ router.use(checkRole(['admin']));
 
 // Панель управления
 router.get('/dashboard', adminController.getDashboard);
+router.post('/dashboard/airports', adminController.addAirport);
+router.put('/dashboard/airports/:id', adminController.updateAirport);
+router.delete('/dashboard/airports/:id', adminController.deleteAirport);
+router.post('/dashboard/airlines', adminController.addAirline);
+router.put('/dashboard/airlines/:id', adminController.updateAirline);
+router.delete('/dashboard/airlines/:id', adminController.deleteAirline);
 
 // Управление пользователями
 router.get('/users', adminController.getUsers);

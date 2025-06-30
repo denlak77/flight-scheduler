@@ -1,4 +1,4 @@
-const { Flight, Airport, Airline, Ticket, User } = require('../models');
+const { Flight, Airport, Airline, User } = require('../models');
 
 // Панель управления оператора
 exports.getDashboard = async (req, res) => {
@@ -11,24 +11,10 @@ exports.getDashboard = async (req, res) => {
       ]
     });
     
-    let tickets = []; // Initialize tickets as an empty array
-    try {
-      tickets = await Ticket.findAll({
-        include: [
-          { model: Flight },
-          { model: User }
-        ]
-      });
-    } catch (ticketError) {
-      console.error('Error fetching tickets for operator dashboard:', ticketError);
-      // Continue without tickets if there's an error fetching them
-    }
-
     res.render('operator/dashboard', {
       title: 'Панель оператора',
       user: req.session.user,
-      flights,
-      tickets
+      flights
     });
   } catch (error) {
     console.error(error);
@@ -71,7 +57,7 @@ exports.getFlights = async (req, res) => {
 
 exports.createFlight = async (req, res) => {
   try {
-    const { flightNumber, departureAirportId, arrivalAirportId, airlineId, departureTime, arrivalTime, price } = req.body;
+    const { flightNumber, departureAirportId, arrivalAirportId, airlineId, departureTime, arrivalTime } = req.body;
 
     await Flight.create({
       flightNumber,
@@ -79,8 +65,7 @@ exports.createFlight = async (req, res) => {
       arrivalAirportId,
       airlineId,
       departureTime,
-      arrivalTime,
-      price
+      arrivalTime
     });
 
     res.redirect('/operator/flights');
@@ -97,7 +82,7 @@ exports.createFlight = async (req, res) => {
 exports.updateFlight = async (req, res) => {
   try {
     const { id } = req.params;
-    const { flightNumber, departureAirportId, arrivalAirportId, airlineId, departureTime, arrivalTime, price } = req.body;
+    const { flightNumber, departureAirportId, arrivalAirportId, airlineId, departureTime, arrivalTime } = req.body;
 
     const flight = await Flight.findByPk(id);
     if (!flight) {
@@ -113,8 +98,7 @@ exports.updateFlight = async (req, res) => {
       arrivalAirportId,
       airlineId,
       departureTime,
-      arrivalTime,
-      price
+      arrivalTime
     });
 
     res.redirect('/operator/flights');
@@ -150,59 +134,6 @@ exports.deleteFlight = async (req, res) => {
   }
 };
 
-// Управление билетами
-exports.getTickets = async (req, res) => {
-  try {
-    const tickets = await Ticket.findAll({
-      include: [
-        { 
-          model: Flight,
-          include: [
-            { model: Airport, as: 'departureAirport' },
-            { model: Airport, as: 'arrivalAirport' }
-          ]
-        },
-        { model: User }
-      ]
-    });
-
-    res.render('operator/tickets', {
-      title: 'Управление билетами',
-      user: req.session.user,
-      tickets
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).render('error', {
-      message: 'Ошибка при загрузке списка билетов',
-      user: req.session.user
-    });
-  }
-};
-
-exports.cancelTicket = async (req, res) => {
-  try {
-    const { id } = req.params;
-    
-    const ticket = await Ticket.findByPk(id);
-    if (!ticket) {
-      return res.status(404).render('error', {
-        message: 'Билет не найден',
-        user: req.session.user
-      });
-    }
-
-    await ticket.destroy();
-    res.redirect('/operator/tickets');
-  } catch (error) {
-    console.error(error);
-    res.status(500).render('error', {
-      message: 'Ошибка при отмене билета',
-      user: req.session.user
-    });
-  }
-};
-
 // Страница поддержки
 exports.getSupport = async (req, res) => {
   try {
@@ -214,6 +145,55 @@ exports.getSupport = async (req, res) => {
     console.error(error);
     res.status(500).render('error', {
       message: 'Ошибка при загрузке страницы поддержки',
+      user: req.session.user
+    });
+  }
+};
+
+// Добавляю функцию для отображения страницы редактирования рейса
+exports.renderEditFlight = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const flight = await Flight.findByPk(id);
+    if (!flight) {
+      return res.status(404).render('error', {
+        message: 'Рейс не найден',
+        user: req.session.user
+      });
+    }
+    const airports = await Airport.findAll();
+    const airlines = await Airline.findAll();
+    res.render('operator/flights/edit', {
+      title: 'Редактирование рейса',
+      user: req.session.user,
+      flight: flight.get({ plain: true }),
+      airports: airports.map(a => a.get({ plain: true })),
+      airlines: airlines.map(a => a.get({ plain: true }))
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('error', {
+      message: 'Ошибка при загрузке страницы редактирования',
+      user: req.session.user
+    });
+  }
+};
+
+// Форма создания нового рейса
+exports.renderNewFlight = async (req, res) => {
+  try {
+    const airports = await Airport.findAll();
+    const airlines = await Airline.findAll();
+    res.render('operator/flights/new', {
+      title: 'Добавление нового рейса',
+      user: req.session.user,
+      airports: airports.map(a => a.get({ plain: true })),
+      airlines: airlines.map(a => a.get({ plain: true }))
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('error', {
+      message: 'Ошибка при загрузке страницы создания рейса',
       user: req.session.user
     });
   }

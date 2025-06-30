@@ -11,9 +11,25 @@
                     <div class="row justify-content-center">
                         <div class="col-md-8">
                             <div class="d-grid gap-3">
-                                <a href="/passenger/flights" class="btn btn-primary btn-lg">
-                                    <i class="fas fa-search me-2"></i>Просмотреть рейсы
-                                </a>
+                                {{#if user}}
+                                    {{#if (eq user.role 'admin')}}
+                                        <a href="/admin/flights" class="btn btn-primary btn-lg">
+                                            <i class="fas fa-search me-2"></i>Просмотреть рейсы
+                                        </a>
+                                    {{else if (eq user.role 'operator')}}
+                                        <a href="/operator/flights" class="btn btn-primary btn-lg">
+                                            <i class="fas fa-search me-2"></i>Просмотреть рейсы
+                                        </a>
+                                    {{else if (eq user.role 'passenger')}}
+                                        <a href="/passenger/flights" class="btn btn-primary btn-lg">
+                                            <i class="fas fa-search me-2"></i>Просмотреть рейсы
+                                        </a>
+                                    {{/if}}
+                                {{else}}
+                                    <a href="/passenger/flights" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-search me-2"></i>Просмотреть рейсы
+                                    </a>
+                                {{/if}}
                                 {{#unless user}}
                                     <a href="/auth/login" class="btn btn-secondary btn-lg">
                                         <i class="fas fa-sign-in-alt me-2"></i>Войти в систему
